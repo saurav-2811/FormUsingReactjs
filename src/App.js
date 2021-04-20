@@ -1,5 +1,8 @@
 import {useState ,useEffect} from 'react'
+import {BrowserRouter as Router,Route} from 'react-router-dom'
 import Header from './Components/Header'
+import Footer from './Components/Footer'
+import About from './Components/About'
 import AddTask from './Components/AddTask'
 import Tasks from './Components/Tasks'
 function App() {
@@ -67,17 +70,25 @@ const toggleReminder=async(id)=>{
     const data=await res.json()
 
  setTasks(tasks.map((task)=>(
-   task.id===id?{ ...task ,reminder:!task.reminder}:task
+   task.id===id?{ ...task ,reminder:data.reminder}:task
   )
   ))
 }
 
   return (
+    <Router>
     <div className="container">
     <Header onAdd={()=>setShowAddTask(!showAddTask)} showTask={showAddTask}/>
-    {showAddTask?<AddTask onAdd={addTask}/>:''}
+    <Route path='/' exact render ={(props)=>(
+      <>
+      {showAddTask?<AddTask onAdd={addTask}/>:''}
    {tasks.length>0? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>:"No Task available..."}
+      </>
+    )} />
+    <Route path='/About' component={About}/>
+    <Footer/>
     </div>
+    </Router>
   );
 }
 
