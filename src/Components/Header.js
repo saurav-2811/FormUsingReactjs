@@ -9,7 +9,7 @@ const Header=({title})=>{
     )
 }
 const onClick=()=>{
-    console.log('click')
+    
 }
 Header.defaultProps={
     title:'Task-Tracker'
