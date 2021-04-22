@@ -15,18 +15,18 @@ function App() {
     getData()
   },[])
   const fetchApi=async()=>{
-    let res=await fetch('http://localhost:5000/tasks')
+    let res=await fetch('https://reacttasktracker2811.herokuapp.com/tasks/')
     let data= await res.json()
-    return data
+    return data.data
   }
   const fetchTask=async(id)=>{
-    let res=await fetch(`http://localhost:5000/tasks/${id}`)
+    let res=await fetch(`https://reacttasktracker2811.herokuapp.com/tasks/${id}`)
     let data= await res.json()
-    return data
+    return data.data
   }
   const [showAddTask , setShowAddTask]=useState(false)
   const addTask=async(task)=>{
-    const res=await fetch('http://localhost:5000/tasks',
+    const res=await fetch('https://reacttasktracker2811.herokuapp.com/tasks/',
     {
       method:'POST',
     headers:{
@@ -36,7 +36,7 @@ function App() {
   }
     )
     const data=await res.json()
-    setTasks([...tasks, data])
+    setTasks([...tasks, data.data])
     // const id= Math.floor(Math.random()*10000)+1
     // const newTask={id , ...task}
     // setTasks([...tasks ,newTask])
@@ -44,21 +44,22 @@ function App() {
 
 
   const deleteTask= async(id)=>{
-    await fetch(`http://localhost:5000/tasks/${id}`,
+    await fetch(`https://reacttasktracker2811.herokuapp.com/tasks/${id}`,
     {
       method:'DELETE'
     })
 
    setTasks(tasks.filter((task)=>(
-               task.id!==id
+               task._id!==id
    )
     ))
   }
 
+
 const toggleReminder=async(id)=>{
     const taskToggle=await fetchTask(id)
     const updTask={...taskToggle, reminder:!taskToggle.reminder}
-    const res= await fetch(`http://localhost:5000/tasks/${id}`,
+     const res= await fetch(`https://reacttasktracker2811.herokuapp.com/tasks/${id}`,
     {
       method:'PUT',
     headers:{
@@ -68,9 +69,8 @@ const toggleReminder=async(id)=>{
   }
     )
     const data=await res.json()
-
  setTasks(tasks.map((task)=>(
-   task.id===id?{ ...task ,reminder:data.reminder}:task
+   task._id===id?{ ...task ,reminder:data.reminder}:task
   )
   ))
 }
